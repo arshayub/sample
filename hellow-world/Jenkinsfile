@@ -11,20 +11,11 @@ pipeline {
         checkout scm
       }
     }
-    stage('Build') {
-      steps {
-        sh 'cd hellow-world && mvn -B -DskipTests clean package'
-      }
-    }
-    stage('Docker Build') {
-      steps {
-        sh 'cd hellow-world && /usr/bin/docker build -t satheeshch/helloworld:latest .'
-      }
-    }
     stage('Push image') {
       steps {
-        withDockerRegistry([credentialsId: '5b5cee8b-741d-4ee6-b323-a39164efde8e', url: "https://index.docker.io/v1/"]) {
-          sh '/usr/bin/docker push satheeshch/helloworld:latest'
+        withDockerRegistry([credentialsId: '00f24109-fda9-4fd9-9c13-c114877c04e4', url: "932864411704.dkr.ecr.us-east-1.amazonaws.com/mylab2"]) {
+          sh '/usr/bin/docker tag httpd 932864411704.dkr.ecr.us-east-1.amazonaws.com/mylab2:latest'
+          sh '/usr/bin/docker push 932864411704.dkr.ecr.us-east-1.amazonaws.com/mylab2:latest'
         }
       }
     }
